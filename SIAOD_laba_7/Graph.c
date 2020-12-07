@@ -4,6 +4,53 @@
 #include "Graph.h"
 #include "Queue.h"
 
+BOOL pathExist;
+
+void printAllPathsUtil(int** matrix, int v1, int v2, int* visited, int size, int* path, int index)
+{
+	visited[v1] = TRUE;
+	path[index] = v1;
+	index++;
+
+	if (v1 == v2)
+	{
+		int i;
+		if (!pathExist)
+			printf("\nFollowing are the paths  between %d and %d\n", path[0]+1, path[index - 1]+1);
+		pathExist = TRUE;
+		for (i = 0; i < index - 1; ++i)
+			printf("%d->", path[i]+1);
+		printf("%d\n", path[i]+1);
+	}
+	else
+	{
+		for (int i = 0; i < size; ++i)
+		{
+			if (matrix[v1][i] > 0 && !visited[i])
+				printAllPathsUtil(matrix, i, v2, visited, size, path, index);
+		}
+	}
+
+	index--;
+	visited[v1] = FALSE;
+
+}
+
+void Graph_findAllPaths_betweenTwoVertices(int** array, int size, int source, int destination)
+{
+	--source;
+	--destination;
+	BOOL* visited = (BOOL*)calloc(size, sizeof(BOOL));
+	for (int i = 0; i < size; ++i)
+		visited[i] = FALSE;
+
+	int* path = (int*)calloc(size, sizeof(int));
+	int index = 0;
+
+	pathExist = FALSE;
+
+	printAllPathsUtil(array, source, destination, visited, size, path, index);
+}
 
 int** Graph_findPaths_Floida(int** matrix, int size, short flag)
 {

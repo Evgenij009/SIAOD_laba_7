@@ -8,10 +8,12 @@ void printMatrix(int**, int);
 int main()
 {
 	setlocale(LC_ALL, "Rus");
-	int size, source, destination, maxFlow;
+	int size, source = 1, destination = 5;
 	const int** array = ReaderFile_getMatrix("test.dat", &size);
 	printf("File read succes.\nSize: %d\n", size);
 	printMatrix(array, size);
+
+	Graph_findAllPaths_betweenTwoVertices(array, size, source, destination);
 
 	int answer = Graph_findCentre(array, size);
 	printf("\nCenter Graph: %d\n", answer);
@@ -23,8 +25,6 @@ int main()
 	arrayAnswer = Graph_findPaths_Floida(array, size, -1);
 	printf("\nMax paths: \n");
 	printMatrix(arrayAnswer, size);
-
-
 
 	return 0;
 }
